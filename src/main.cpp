@@ -91,6 +91,15 @@ int main() {
           double py = j[1]["y"];
           double psi = j[1]["psi"];
           double v = j[1]["speed"];
+          double steering_angle = j[1]["steering_angle"];
+          double throttle = j[1]["throttle"];
+          // predict the next position
+          double next_psi = psi - v/Lf*steering_angle*dt;
+          double c = cos(next_psi);
+          double s = sin(next_psi);
+          double next_px = px + v * c * dt;
+          double next_py = py + v * s * dt;
+          double next_v = v + throttle*dt; // next velocity
 
           /*
           * TODO: Calculate steering angle and throttle using MPC.
@@ -107,7 +116,7 @@ int main() {
           msgJson["steering_angle"] = steer_value;
           msgJson["throttle"] = throttle_value;
 
-          //Display the MPC predicted trajectory 
+          //Display the MPC predicted trajectory
           vector<double> mpc_x_vals;
           vector<double> mpc_y_vals;
 
